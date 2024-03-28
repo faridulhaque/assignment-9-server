@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 
-export const makeClaim = catchAsync(
+export const createClaim = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     return null;
   }

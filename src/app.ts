@@ -1,6 +1,16 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
-
+import {
+  registerUserController,
+  updateProfile,
+  userLoginController,
+} from "./user/user.controller";
+import {
+  createFoundItemCategory,
+  filterFoundItem,
+  reportFoundItem,
+} from "./foundItem/foundItem.controller";
+import { createClaim, getClaim, updateClaim } from "./claim/claim.controller";
 
 const app: Application = express();
 
@@ -16,6 +26,19 @@ const corsConfig = {
 };
 
 app.use(cors(corsConfig));
+
+app.post("/api/register", registerUserController);
+app.post("/api/login", userLoginController);
+app.put("/api/my-profile", updateProfile);
+
+app.post("/api/found-item-categories", createFoundItemCategory);
+app.post("/api/found-items", reportFoundItem);
+app.get("/api/found-items", filterFoundItem);
+
+app.post("/api/claims", createClaim);
+app.get("/api/claims", getClaim);
+app.put("/api/claims/:claimId", updateClaim);
+
 
 
 
