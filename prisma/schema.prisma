@@ -51,7 +51,7 @@ model Claim {
   id                     String       @id @default(uuid())
   userId                 String
   foundItemId            String
-  status                 String
+  status                 String       @default("PENDING")
   distinguishingFeatures String
   lostDate               DateTime
   createdAt              DateTime     @default(now())

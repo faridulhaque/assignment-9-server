@@ -10,3 +10,8 @@ export type TProfile = {
     age: number,
 }
 
+export type TProfileU = {
+    bio?: string,
+    age?: number,
+}
+
