@@ -4,3 +4,14 @@ export type TFoundItem = {
   location: string;
   description: string;
 };
+
+
+export type TItemFilter = {
+  searchTerm?: string;
+  page?: string;
+  limit?:string;
+  foundItemName?: string;
+  sortBy?: "foundItemName" | "category" | "lostDate";
+  sortOrder?: "asc" | "desc" 
+
+}

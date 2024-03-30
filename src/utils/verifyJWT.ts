@@ -18,7 +18,7 @@ export const verifyJwt = async (token: string) => {
     },
   });
   if (!user) {
-    throw new AppError("Unauthorized", {
+    throw new AppError("auth", {
       message:
         "You do not have the necessary permissions to access this resource.",
     });

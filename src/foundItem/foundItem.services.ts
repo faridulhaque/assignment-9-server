@@ -81,4 +81,73 @@ export const ReportFoundItemService = async (
     user,
   };
 };
-export const FilterFoundItemService = () => {};
+// filtering found items
+export const FilterFoundItemService = async (queries: any) => {
+  const { searchTerm, page, limit, sortBy, sortOrder, foundItemName } = queries;
+
+  const pageNumber = page ? page : 1;
+  const limitTotal = limit ? limit : 10;
+
+  const result = await prisma.foundItem.findMany({
+    where: {
+      OR: foundItemName
+        ? [
+            {
+              foundItemName: {
+                equals: foundItemName,
+                mode: "insensitive",
+              },
+            },
+          ]
+        : [
+            {
+              foundItemName: {
+                contains: searchTerm,
+                mode: "insensitive",
+              },
+            },
+            {
+              location: {
+                contains: searchTerm,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: searchTerm,
+                mode: "insensitive",
+              },
+            },
+          ],
+    },
+    take: parseInt(limitTotal),
+    skip: (parseInt(pageNumber) - 1) * parseInt(limitTotal),
+    orderBy: [
+      {
+        [sortBy]: sortOrder,
+      },
+    ],
+
+    include: {
+      foundItemCategory: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          createdAt: true,
+        },
+      },
+    },
+  });
+
+  const response = {
+    data: result,
+    meta: {
+      page: pageNumber,
+      limit: limitTotal,
+    },
+  };
+
+  return response;
+};
