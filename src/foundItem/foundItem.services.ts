@@ -89,6 +89,11 @@ export const FilterFoundItemService = async (queries: any) => {
   const limitTotal = limit ? limit : 10;
 
   const result = await prisma.foundItem.findMany({
+    orderBy: [
+      {
+        [sortBy === "foundDate" ? "createdAt" : sortBy]: sortOrder,
+      },
+    ],
     where: {
       OR: searchTerm
         ? [
@@ -123,11 +128,7 @@ export const FilterFoundItemService = async (queries: any) => {
 
     take: parseInt(limitTotal),
     skip: (parseInt(pageNumber) - 1) * parseInt(limitTotal),
-    orderBy: [
-      {
-        [sortBy === "foundDate" ? "createdAt" : sortBy]: sortOrder,
-      },
-    ],
+    
     select: {
       id: true,
       foundItemName: true,

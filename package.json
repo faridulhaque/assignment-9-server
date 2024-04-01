@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "start": "node ./dist/server.js",
-    "build": "tsc",
-    "start-dev": "nodemon ./dist/server.js"
+    "postinstall": "prisma generate"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
