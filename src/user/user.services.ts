@@ -17,6 +17,7 @@ export const createUserService = async (data: TUser) => {
         select: {
           id: true,
           name: true,
+          email: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -41,7 +42,7 @@ export const createUserService = async (data: TUser) => {
         profile: createUserProfile,
       };
     } catch (error) {
-      throw new AppError("UNIQUE", error);
+      throw new AppError("prisma", error);
     }
   });
 
@@ -105,7 +106,7 @@ export const updateProfileService = async (userId: string, data: TProfileU) => {
           name: true,
           email: true,
           createdAt: true,
-          password: true,
+          updatedAt: true,
         },
       },
     },
@@ -126,7 +127,7 @@ export const getProfileService = async (id: string) => {
           name: true,
           email: true,
           createdAt: true,
-          password: true,
+          updatedAt: true,
         },
       },
     },

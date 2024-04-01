@@ -9,7 +9,7 @@ export const createFoundItemCategoryService = async (name: string) => {
     where: { name: name },
   });
   if (category) {
-    throw new AppError("UNIQUE", {
+    throw new AppError("prisma", {
       message: "Category already exists",
     });
   }
@@ -90,16 +90,8 @@ export const FilterFoundItemService = async (queries: any) => {
 
   const result = await prisma.foundItem.findMany({
     where: {
-      OR: foundItemName
+      OR: searchTerm
         ? [
-            {
-              foundItemName: {
-                equals: foundItemName,
-                mode: "insensitive",
-              },
-            },
-          ]
-        : [
             {
               foundItemName: {
                 contains: searchTerm,
@@ -118,18 +110,33 @@ export const FilterFoundItemService = async (queries: any) => {
                 mode: "insensitive",
               },
             },
+          ]
+        : [
+            {
+              foundItemName: {
+                equals: foundItemName,
+                mode: "insensitive",
+              },
+            },
           ],
     },
+
     take: parseInt(limitTotal),
     skip: (parseInt(pageNumber) - 1) * parseInt(limitTotal),
     orderBy: [
       {
-        [sortBy]: sortOrder,
+        [sortBy === "foundDate" ? "createdAt" : sortBy]: sortOrder,
       },
     ],
+    select: {
+      id: true,
+      foundItemName: true,
+      location: true,
+      description: true,
+      createdAt: true,
+      updatedAt: true,
+      category: true,
 
-    include: {
-      foundItemCategory: true,
       user: {
         select: {
           id: true,
@@ -139,6 +146,19 @@ export const FilterFoundItemService = async (queries: any) => {
         },
       },
     },
+
+    // include: {
+    //   category: true,
+
+    //   user: {
+    //     select: {
+    //       id: true,
+    //       name: true,
+    //       email: true,
+    //       createdAt: true,
+    //     },
+    //   },
+    // },
   });
 
   const response = {

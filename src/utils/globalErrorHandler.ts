@@ -7,6 +7,7 @@ export const globalErrorHandler = (
   next: NextFunction
 ) => {
   const { errorType, errorSource } = err;
+console.log(err)
 
   if (errorType === "JOI") {
     // if the error is related to JOI

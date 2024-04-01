@@ -11,7 +11,7 @@ export type TItemFilter = {
   page?: string;
   limit?:string;
   foundItemName?: string;
-  sortBy?: "foundItemName" | "category" | "lostDate";
+  sortBy?: "foundItemName" | "category" | "foundDate";
   sortOrder?: "asc" | "desc" 
 
 }

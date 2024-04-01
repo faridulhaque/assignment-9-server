@@ -13,6 +13,6 @@ export const JoiItemFilterSchema = Joi.object({
   page: Joi.string().optional(),
   limit: Joi.string().optional(),
   foundItemName: Joi.string().optional(),
-  sortBy: Joi.string().valid('foundItemName', 'category', 'lostDate').optional(),
+  sortBy: Joi.string().valid('foundItemName', 'category', 'foundDate').optional(),
   sortOrder: Joi.string().valid('asc', 'desc').optional(),
 });

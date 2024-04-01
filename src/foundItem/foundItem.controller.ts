@@ -50,12 +50,12 @@ export const reportFoundItem = catchAsync(
 export const filterFoundItem = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
 
-    const {value, error} = JoiItemFilterSchema.validate(req.body)
+    const {value, error} = JoiItemFilterSchema.validate(req.query)
     if (error) {
       throw new AppError("JOI", error);
     }
 
-    const response: any = await FilterFoundItemService(req.query as any);
+    const response: any = await FilterFoundItemService(value as any);
     return res.status(201).json({
       success: true,
       statusCode: 201,
