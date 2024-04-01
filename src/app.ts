@@ -42,9 +42,11 @@ app.get("/api/claims", getClaim);
 app.get("/api/my-profile", getProfile);
 app.put("/api/claims/:claimId", updateClaim);
 
+app.get("/test", (req, res) => {
+  res.status(200).json({ message: "Hello world" });
+});
 
 app.use(globalErrorHandler);
-
 
 app.use("*", (req: Request, res: Response) => {
   res.status(200).json({ message: "no route found" });
