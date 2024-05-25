@@ -5,10 +5,12 @@ import AppError from "./appError";
 const prisma = new PrismaClient();
 
 export const verifyJwt = async (token: string) => {
+
   const jwtDecoded: any = jwt.verify(
     token as string,
     process.env.JWT_SECRET as string
   );
+
 
   const { id, email } = jwtDecoded;
   const user = await prisma.user.findFirst({

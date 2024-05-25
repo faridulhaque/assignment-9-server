@@ -9,10 +9,12 @@ import {
 import {
   createFoundItemCategory,
   filterFoundItem,
+  getAllCategory,
   reportFoundItem,
 } from "./foundItem/foundItem.controller";
 import { createClaim, getClaim, updateClaim } from "./claim/claim.controller";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
+import { getRecentLostItems, reportLostItem } from "./lostItem/lostItem.controller";
 
 const app: Application = express();
 
@@ -32,9 +34,12 @@ app.use(cors(corsConfig));
 app.post("/api/register", registerUserController);
 app.post("/api/login", userLoginController);
 app.post("/api/category/create", createFoundItemCategory);
+app.get("/api/category/all", getAllCategory);
+app.post("/api/item/lost", reportLostItem);
+app.get("/api/items/lost/recent", getRecentLostItems);
+
 
 app.put("/api/my-profile", updateProfile);
-app.post("/api/found-items", reportFoundItem);
 app.get("/api/found-items", filterFoundItem);
 
 app.post("/api/claims", createClaim);

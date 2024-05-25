@@ -28,6 +28,10 @@ export const createFoundItemCategoryService = async (name: string) => {
   return result;
 };
 
+export const getAllCategoryService = async() =>{
+  return await prisma.foundItemCategory.findMany()
+}
+
 export const ReportFoundItemService = async (
   body: TFoundItem,
   userId: string

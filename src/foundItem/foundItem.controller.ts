@@ -5,8 +5,12 @@ import {
   FilterFoundItemService,
   ReportFoundItemService,
   createFoundItemCategoryService,
+  getAllCategoryService,
 } from "./foundItem.services";
-import { JoiFoundItemSchema, JoiItemFilterSchema } from "./foundItem.validation";
+import {
+  JoiFoundItemSchema,
+  JoiItemFilterSchema,
+} from "./foundItem.validation";
 import AppError from "../utils/appError";
 import { verifyJwt } from "../utils/verifyJWT";
 
@@ -20,6 +24,18 @@ export const createFoundItemCategory = catchAsync(
       statusCode: 201,
       data: result,
       message: "Category created successfully",
+    });
+  }
+);
+
+export const getAllCategory = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllCategoryService();
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      data: result,
+      message: "categories retrieved successfully",
     });
   }
 );
@@ -48,8 +64,7 @@ export const reportFoundItem = catchAsync(
 // filtering found item
 export const filterFoundItem = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-
-    const {value, error} = JoiItemFilterSchema.validate(req.query)
+    const { value, error } = JoiItemFilterSchema.validate(req.query);
     if (error) {
       throw new AppError("JOI", error);
     }

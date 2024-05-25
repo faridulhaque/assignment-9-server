@@ -63,8 +63,7 @@ export const loginUserService = async (email: string, password: string) => {
     {
       id: foundUser?.id,
       email: foundUser?.email,
-      iat: Math.floor(Date.now()),
-      exp: Math.floor(Date.now()),
+      
     },
     process.env.JWT_SECRET as string
   );
