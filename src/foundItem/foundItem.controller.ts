@@ -8,7 +8,6 @@ import {
 } from "./foundItem.services";
 import { JoiFoundItemSchema, JoiItemFilterSchema } from "./foundItem.validation";
 import AppError from "../utils/appError";
-import { TUser } from "../user/user.interfaces";
 import { verifyJwt } from "../utils/verifyJWT";
 
 // creating a foundItem category
@@ -20,7 +19,7 @@ export const createFoundItemCategory = catchAsync(
       success: true,
       statusCode: 201,
       data: result,
-      message: "Found item category created successfully",
+      message: "Category created successfully",
     });
   }
 );

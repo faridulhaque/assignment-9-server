@@ -31,9 +31,9 @@ app.use(cors(corsConfig));
 
 app.post("/api/register", registerUserController);
 app.post("/api/login", userLoginController);
-app.put("/api/my-profile", updateProfile);
+app.post("/api/category/create", createFoundItemCategory);
 
-app.post("/api/found-item-categories", createFoundItemCategory);
+app.put("/api/my-profile", updateProfile);
 app.post("/api/found-items", reportFoundItem);
 app.get("/api/found-items", filterFoundItem);
 
@@ -41,6 +41,7 @@ app.post("/api/claims", createClaim);
 app.get("/api/claims", getClaim);
 app.get("/api/my-profile", getProfile);
 app.put("/api/claims/:claimId", updateClaim);
+
 
 app.get("/test", (req, res) => {
   res.status(200).json({ message: "Hello world" });

@@ -1,8 +1,7 @@
-export type TUser = {
-    name: string,
+export type TRegUser = {
+    username: string,
     email: string,
     password: string,
-    profile: TProfile,
 }
 
 export type TProfile = {

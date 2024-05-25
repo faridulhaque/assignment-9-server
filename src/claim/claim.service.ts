@@ -41,7 +41,7 @@ export const getClaimsService = async () => {
           user: {
             select: {
               id: true,
-              name: true,
+              username: true,
               email: true,
               createdAt: true,
               updatedAt: true,

@@ -43,7 +43,6 @@ export const ReportFoundItemService = async (
       id: true,
       userId: true,
       categoryId: true,
-      foundItemName: true,
       description: true,
       location: true,
       createdAt: true,
@@ -57,7 +56,6 @@ export const ReportFoundItemService = async (
     },
     select: {
       id: true,
-      name: true,
       email: true,
       createdAt: true,
       updatedAt: true,
@@ -98,12 +96,6 @@ export const FilterFoundItemService = async (queries: any) => {
       OR: searchTerm
         ? [
             {
-              foundItemName: {
-                contains: searchTerm,
-                mode: "insensitive",
-              },
-            },
-            {
               location: {
                 contains: searchTerm,
                 mode: "insensitive",
@@ -116,22 +108,14 @@ export const FilterFoundItemService = async (queries: any) => {
               },
             },
           ]
-        : [
-            {
-              foundItemName: {
-                equals: foundItemName,
-                mode: "insensitive",
-              },
-            },
-          ],
+        : [],
     },
 
     take: parseInt(limitTotal),
     skip: (parseInt(pageNumber) - 1) * parseInt(limitTotal),
-    
+
     select: {
       id: true,
-      foundItemName: true,
       location: true,
       description: true,
       createdAt: true,
@@ -141,7 +125,6 @@ export const FilterFoundItemService = async (queries: any) => {
       user: {
         select: {
           id: true,
-          name: true,
           email: true,
           createdAt: true,
         },

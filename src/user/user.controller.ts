@@ -10,7 +10,7 @@ import catchAsync from "../utils/catchAsync";
 import {
   JoiLoginUserSchema,
   JoiUpdateProfileSchema,
-  JoiUserSchema,
+  JoiUserRegistrationSchema,
 } from "./user.validation";
 import AppError from "../utils/appError";
 import { verifyJwt } from "../utils/verifyJWT";
@@ -19,7 +19,7 @@ import { verifyJwt } from "../utils/verifyJWT";
 
 export const registerUserController = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { value, error } = JoiUserSchema.validate(req.body);
+    const { value, error } = JoiUserRegistrationSchema.validate(req.body);
 
     if (error) {
       throw new AppError("JOI", error);

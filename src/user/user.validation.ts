@@ -5,11 +5,10 @@ const JoiProfileSchema = Joi.object({
   age: Joi.number().integer().min(18).required(),
 });
 
-export const JoiUserSchema = Joi.object({
-  name: Joi.string().required(),
+export const JoiUserRegistrationSchema = Joi.object({
+  username: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
-  profile: JoiProfileSchema,
 });
 
 export const JoiLoginUserSchema = Joi.object({

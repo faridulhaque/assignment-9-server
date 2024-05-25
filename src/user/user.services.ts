@@ -1,51 +1,36 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
-import { TProfile, TProfileU, TUser } from "./user.interfaces";
+import { TProfile, TProfileU, TRegUser } from "./user.interfaces";
 import AppError from "../utils/appError";
 const prisma = new PrismaClient();
 
 // service function for create user
 
-export const createUserService = async (data: TUser) => {
-  const { profile, ...user } = data;
-
-  const result = await prisma.$transaction(async (transactionClient) => {
-    try {
-      const createUser = await transactionClient.user.create({
-        data: user,
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-      const userProfile = {
-        ...profile,
-        userId: createUser.id,
-      };
-      const createUserProfile = await transactionClient.userProfile.create({
-        data: userProfile,
-        select: {
-          id: true,
-          userId: true,
-          bio: true,
-          age: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-      return {
-        ...createUser,
-        profile: createUserProfile,
-      };
-    } catch (error) {
-      throw new AppError("prisma", error);
-    }
+export const createUserService = async (data: TRegUser) => {
+  const user = await prisma.user.findFirst({
+    where: { username: data?.username },
   });
 
+  if (user) {
+    throw new AppError("prisma", {
+      message: "username already exists",
+    });
+  }
+
+  const result = await prisma.user.create({
+    data: {
+      username: data?.username,
+      email: data?.email,
+      password: data?.password,
+    },
+    select: {
+      id: true,
+      username: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
   return result;
 };
 
@@ -56,8 +41,8 @@ export const loginUserService = async (email: string, password: string) => {
     where: { email: email },
     select: {
       id: true,
-      name: true,
       email: true,
+      username: true,
       password: true,
     },
   });
@@ -85,7 +70,6 @@ export const loginUserService = async (email: string, password: string) => {
   );
 
   const result = {
-    name: foundUser?.name,
     email: foundUser?.email,
     id: foundUser?.id,
     token: token,
@@ -103,7 +87,6 @@ export const updateProfileService = async (userId: string, data: TProfileU) => {
       user: {
         select: {
           id: true,
-          name: true,
           email: true,
           createdAt: true,
           updatedAt: true,
@@ -124,7 +107,6 @@ export const getProfileService = async (id: string) => {
       user: {
         select: {
           id: true,
-          name: true,
           email: true,
           createdAt: true,
           updatedAt: true,

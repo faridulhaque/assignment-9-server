@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id          String       @id @default(uuid())
-  name        String
+  username    String       @unique
   email       String       @unique
   password    String
   createdAt   DateTime     @default(now())
@@ -24,7 +24,7 @@ model User {
 
 model FoundItemCategory {
   id        String      @id @default(uuid())
-  name      String
+  name      String      @unique
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   FoundItem FoundItem[]
@@ -34,50 +34,49 @@ model FoundItemCategory {
 }
 
 model FoundItem {
-  id            String            @id @default(uuid())
-  userId        String
-  categoryId    String
-  foundItemName String
-  description   String
-  location      String
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  user          User              @relation(fields: [userId], references: [id])
-  category      FoundItemCategory @relation(fields: [categoryId], references: [id])
-  claim         Claim[]
+  id          String            @id @default(uuid())
+  userId      String
+  categoryId  String
+  description String
+  location    String?
+  foundDate   DateTime?         @default(now())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  category    FoundItemCategory @relation(fields: [categoryId], references: [id])
+  claim       Claim[]
 
   @@map("foundItems")
 }
 
 model LostItem {
-  id            String            @id @default(uuid())
-  userId        String
-  categoryId    String
-  lostItemName String
-  description   String
-  location      String
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  user          User              @relation(fields: [userId], references: [id])
-  category      FoundItemCategory @relation(fields: [categoryId], references: [id])
-  claim         Claim[]
+  id          String            @id @default(uuid())
+  userId      String
+  categoryId  String
+  description String
+  location    String
+  lostDate    DateTime
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  category    FoundItemCategory @relation(fields: [categoryId], references: [id])
+  claim       Claim[]
 
   @@map("lostItems")
 }
 
 model Claim {
-  id                     String       @id @default(uuid())
-  userId                 String
-  foundItemId            String
-  status                 String       @default("PENDING")
-  distinguishingFeatures String
-  lostDate               DateTime
-  createdAt              DateTime     @default(now())
-  updatedAt              DateTime     @updatedAt
-  FoundItem              FoundItem    @relation(fields: [foundItemId], references: [id])
-  claim_user             claim_user[]
-  LostItem               LostItem?    @relation(fields: [lostItemId], references: [id])
-  lostItemId             String?
+  id          String       @id @default(uuid())
+  userId      String
+  foundItemId String
+  status      String       @default("PENDING")
+  lostDate    DateTime
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  FoundItem   FoundItem    @relation(fields: [foundItemId], references: [id])
+  claim_user  claim_user[]
+  LostItem    LostItem?    @relation(fields: [lostItemId], references: [id])
+  lostItemId  String?
 
   @@map("claims")
 }

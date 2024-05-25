@@ -3,8 +3,8 @@ import { TLostItem } from "./lostItem.interfaces";
 const prisma = new PrismaClient();
 
 
-export const ReportFoundItemService = async (
-    body: TLostItem,
+export const ReportLostItemService = async (
+    body: any,
     userId: string
   ) => {
     const newData = {
@@ -18,7 +18,6 @@ export const ReportFoundItemService = async (
         id: true,
         userId: true,
         categoryId: true,
-        lostItemName: true,
         description: true,
         location: true,
         createdAt: true,
@@ -32,7 +31,6 @@ export const ReportFoundItemService = async (
       },
       select: {
         id: true,
-        name: true,
         email: true,
         createdAt: true,
         updatedAt: true,
