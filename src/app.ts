@@ -36,6 +36,7 @@ app.post("/api/login", userLoginController);
 app.post("/api/category/create", createFoundItemCategory);
 app.get("/api/category/all", getAllCategory);
 app.post("/api/item/lost", reportLostItem);
+app.post("/api/item/found", reportFoundItem);
 app.get("/api/items/lost/recent", getRecentLostItems);
 
 

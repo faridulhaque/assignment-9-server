@@ -28,27 +28,23 @@ export const createFoundItemCategoryService = async (name: string) => {
   return result;
 };
 
-export const getAllCategoryService = async() =>{
-  return await prisma.foundItemCategory.findMany()
-}
+export const getAllCategoryService = async () => {
+  return await prisma.foundItemCategory.findMany();
+};
 
-export const ReportFoundItemService = async (
-  body: TFoundItem,
-  userId: string
-) => {
+export const ReportFoundItemService = async (body: any, userId: string) => {
   const newData = {
     ...body,
     userId,
   };
 
-  const item = await prisma.foundItem.create({
+  const item = await prisma.lostItem.create({
     data: newData,
     select: {
       id: true,
       userId: true,
       categoryId: true,
       description: true,
-      location: true,
       createdAt: true,
       updatedAt: true,
     },
