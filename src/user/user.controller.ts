@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  changePasswordService,
   createUserService,
   getProfileService,
   loginUserService,
@@ -11,6 +12,7 @@ import {
   JoiLoginUserSchema,
   JoiUpdateProfileSchema,
   JoiUserRegistrationSchema,
+  joiChangePassword,
 } from "./user.validation";
 import AppError from "../utils/appError";
 import { verifyJwt } from "../utils/verifyJWT";
@@ -87,6 +89,24 @@ export const getProfile = catchAsync(
       statusCode: 200,
       data: result,
       message: "Profile retrieved successfully",
+    });
+  }
+);
+
+export const changePassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await verifyJwt(req.headers.authorization as string);
+    const { value, error } = joiChangePassword.validate(req.body);
+    if (error) {
+      throw new AppError("JOI", error);
+    }
+    const result = await changePasswordService(value, user?.id);
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: null,
+      message: "Password changed successfully",
     });
   }
 );

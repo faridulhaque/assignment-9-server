@@ -17,6 +17,10 @@ export const JoiLoginUserSchema = Joi.object({
 });
 
 export const JoiUpdateProfileSchema = Joi.object({
-  bio: Joi.string().required(),
-  age: Joi.number().integer().min(18).required(),
+  username: Joi.string().optional(),
+  email: Joi.string().optional(),
+});
+export const joiChangePassword = Joi.object({
+  oldPassword: Joi.string().required(),
+  newPassword: Joi.string().required(),
 });

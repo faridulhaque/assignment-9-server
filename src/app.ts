@@ -1,6 +1,7 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import {
+  changePassword,
   getProfile,
   registerUserController,
   updateProfile,
@@ -38,14 +39,15 @@ app.get("/api/category/all", getAllCategory);
 app.post("/api/item/lost", reportLostItem);
 app.post("/api/item/found", reportFoundItem);
 app.get("/api/items/lost/recent", getRecentLostItems);
+app.get("/api/profile", getProfile);
+app.put("/api/profile/update", updateProfile);
+app.put("/api/change-password", changePassword);
 
 
-app.put("/api/my-profile", updateProfile);
 app.get("/api/found-items", filterFoundItem);
 
 app.post("/api/claims", createClaim);
 app.get("/api/claims", getClaim);
-app.get("/api/my-profile", getProfile);
 app.put("/api/claims/:claimId", updateClaim);
 
 

@@ -62,8 +62,6 @@ export const loginUserService = async (email: string, password: string) => {
   const token = jwt.sign(
     {
       id: foundUser?.id,
-      email: foundUser?.email,
-      
     },
     process.env.JWT_SECRET as string
   );
@@ -76,43 +74,60 @@ export const loginUserService = async (email: string, password: string) => {
   return result;
 };
 
-export const updateProfileService = async (userId: string, data: TProfileU) => {
-  const result = await prisma.userProfile.update({
+export const updateProfileService = async (id: string, data: any) => {
+  const result = await prisma.user.update({
     where: {
-      userId: userId,
+      id,
     },
     data: data,
-    include: {
-      user: {
-        select: {
-          id: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
-    },
   });
 
   return result;
 };
 
 export const getProfileService = async (id: string) => {
-  const user = await prisma.userProfile.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
-      userId: id,
+      id: id,
     },
-    include: {
-      user: {
-        select: {
-          id: true,
-          email: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
+    select: {
+      username: true,
+      id: true,
+      email: true,
     },
   });
 
   return user;
+};
+
+export const changePasswordService = async (data: any, id: string) => {
+  const user: any = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      password: true,
+    },
+  });
+
+  const isMatched = await bcrypt.compare(data.oldPassword, user?.password);
+  if (!isMatched) {
+    throw new AppError("auth", {
+      message: `Incorrect old password`,
+    });
+  }
+
+  const salt = await bcrypt.genSalt();
+  const passwordHash = await bcrypt.hash(data?.newPassword, salt);
+
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      password: passwordHash,
+    },
+  });
+
+  return result;
 };

@@ -10,7 +10,7 @@ export type TProfile = {
 }
 
 export type TProfileU = {
-    bio?: string,
-    age?: number,
+    username?: string,
+    email?: number,
 }
 
