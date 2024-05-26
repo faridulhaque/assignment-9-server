@@ -3,6 +3,7 @@ import {
   changePasswordService,
   createUserService,
   getProfileService,
+  getUsersService,
   loginUserService,
   updateProfileService,
 } from "./user.services";
@@ -89,6 +90,26 @@ export const getProfile = catchAsync(
       statusCode: 200,
       data: result,
       message: "Profile retrieved successfully",
+    });
+  }
+);
+export const getAllUsers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await verifyJwt(req.headers.authorization as string);
+    if (user?.isAdmin === false) {
+      throw new AppError("auth", {
+        message:
+          "You do not have the necessary permissions to access this resource.",
+      });
+    }
+
+    const result = await getUsersService();
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: result,
+      message: "users retrieved successfully",
     });
   }
 );

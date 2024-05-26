@@ -44,11 +44,18 @@ export const loginUserService = async (email: string, password: string) => {
       email: true,
       username: true,
       password: true,
+      isBanned: true,
+      isAdmin: true,
     },
   });
   if (!foundUser) {
     throw new AppError("auth", {
       message: `There is no user with this email`,
+    });
+  }
+  if (foundUser.isBanned) {
+    throw new AppError("auth", {
+      message: `User was banned from this site`,
     });
   }
 
@@ -130,4 +137,18 @@ export const changePasswordService = async (data: any, id: string) => {
   });
 
   return result;
+};
+
+export const getUsersService = async () => {
+  const user = await prisma.user.findMany({
+    select: {
+      username: true,
+      id: true,
+      email: true,
+      isAdmin: true,
+      isBanned: true,
+    },
+  });
+
+  return user;
 };
