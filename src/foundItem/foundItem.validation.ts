@@ -9,6 +9,8 @@ export const JoiFoundItemSchema = Joi.object({
   foundDate: Joi.date().required(),
 });
 
+
+
 export const JoiItemFilterSchema = Joi.object({
   searchTerm: Joi.string().optional(),
   page: Joi.string().optional(),

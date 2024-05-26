@@ -6,8 +6,9 @@ import {
   ReportFoundItemService,
   createFoundItemCategoryService,
   getAllCategoryService,
+  getFoundItemService,
   getMyFoundItemsService,
- 
+  updateFoundItemService,
 } from "./foundItem.services";
 import {
   JoiFoundItemSchema,
@@ -96,3 +97,34 @@ export const myFoundItem = catchAsync(
   }
 );
 
+export const updateFoundItem = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    await verifyJwt(req.headers.authorization as string);
+    const { value, error } = JoiFoundItemSchema.validate(req.body);
+    if (error) {
+      throw new AppError("JOI", error);
+    }
+
+    const result = await updateFoundItemService(req.params.id as string, value);
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: result,
+      message: "Found item updated successfully",
+    });
+  }
+);
+
+export const getFoundItemController = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    await verifyJwt(req.headers.authorization as string);
+    const result = await getFoundItemService(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: result,
+      message: "Item retrieved successfully",
+    });
+  }
+);

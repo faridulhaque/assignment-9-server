@@ -80,3 +80,29 @@ export const getMyLostItemsService = async (userId: string) => {
     },
   });
 };
+
+export const updateLostItemService = async (id:string, data: any) => {
+  const result = await prisma.lostItem.update({
+    where: {
+      id,
+    },
+    data: data,
+  });
+
+  return result;
+};
+
+export const getLostItemService = async (id: string) => {
+  const item = await prisma.lostItem.findUnique({
+    where: {
+      id: id,
+    },
+    include:{
+      category: true,
+    }
+  });
+
+  return item;
+};
+
+

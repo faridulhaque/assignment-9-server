@@ -11,12 +11,20 @@ import {
   createFoundItemCategory,
   filterFoundItem,
   getAllCategory,
+  getFoundItemController,
   myFoundItem,
   reportFoundItem,
+  updateFoundItem,
 } from "./foundItem/foundItem.controller";
 import { createClaim, getClaim, updateClaim } from "./claim/claim.controller";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
-import { getRecentLostItems, myLostItem, reportLostItem } from "./lostItem/lostItem.controller";
+import {
+  getLostItemController,
+  getRecentLostItems,
+  myLostItem,
+  reportLostItem,
+  updateLostItem,
+} from "./lostItem/lostItem.controller";
 
 const app: Application = express();
 
@@ -45,14 +53,17 @@ app.put("/api/profile/update", updateProfile);
 app.put("/api/change-password", changePassword);
 app.get("/api/my-found-items", myFoundItem);
 app.get("/api/my-lost-items", myLostItem);
+app.put("/api/found-item/update/:id", updateFoundItem);
+app.put("/api/lost-item/update/:id", updateLostItem);
 
+app.get("/api/found-item/:id", getFoundItemController);
+app.get("/api/lost-item/update/:id", getLostItemController);
 
 app.get("/api/found-items", filterFoundItem);
 
 app.post("/api/claims", createClaim);
 app.get("/api/claims", getClaim);
 app.put("/api/claims/:claimId", updateClaim);
-
 
 app.get("/test", (req, res) => {
   res.status(200).json({ message: "Hello world" });

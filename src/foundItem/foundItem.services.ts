@@ -166,3 +166,28 @@ export const getMyFoundItemsService = async (userId: string) => {
     },
   });
 };
+
+
+export const updateFoundItemService = async (id:string, data: any) => {
+  const result = await prisma.foundItem.update({
+    where: {
+      id,
+    },
+    data: data,
+  });
+
+  return result;
+};
+
+export const getFoundItemService = async (id: string) => {
+  const item = await prisma.foundItem.findUnique({
+    where: {
+      id: id,
+    },
+    include:{
+      category: true,
+    }
+  });
+
+  return item;
+};
