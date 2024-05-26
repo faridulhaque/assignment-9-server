@@ -52,6 +52,9 @@ export const ReportLostItemService = async (body: any, userId: string) => {
 
 export const getRecentLostItemService = async () => {
   const items = await prisma.lostItem.findMany({
+    where: {
+      isDeleted: false,
+    },
     include: {
       category: {
         select: {
@@ -69,11 +72,11 @@ export const getRecentLostItemService = async () => {
   return items;
 };
 
-
 export const getMyLostItemsService = async (userId: string) => {
   return await prisma.lostItem.findMany({
     where: {
       userId,
+      isDeleted: false,
     },
     include: {
       category: true,
@@ -81,7 +84,7 @@ export const getMyLostItemsService = async (userId: string) => {
   });
 };
 
-export const updateLostItemService = async (id:string, data: any) => {
+export const updateLostItemService = async (id: string, data: any) => {
   const result = await prisma.lostItem.update({
     where: {
       id,
@@ -97,12 +100,10 @@ export const getLostItemService = async (id: string) => {
     where: {
       id: id,
     },
-    include:{
+    include: {
       category: true,
-    }
+    },
   });
 
   return item;
 };
-
-

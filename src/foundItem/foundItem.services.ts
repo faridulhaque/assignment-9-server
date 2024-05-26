@@ -160,6 +160,7 @@ export const getMyFoundItemsService = async (userId: string) => {
   return await prisma.foundItem.findMany({
     where: {
       userId: userId,
+      isDeleted: false,
     },
     include: {
       category: true,

@@ -57,7 +57,7 @@ app.put("/api/found-item/update/:id", updateFoundItem);
 app.put("/api/lost-item/update/:id", updateLostItem);
 
 app.get("/api/found-item/:id", getFoundItemController);
-app.get("/api/lost-item/update/:id", getLostItemController);
+app.get("/api/lost-item/:id", getLostItemController);
 
 app.get("/api/found-items", filterFoundItem);
 

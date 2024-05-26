@@ -100,12 +100,17 @@ export const myFoundItem = catchAsync(
 export const updateFoundItem = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await verifyJwt(req.headers.authorization as string);
-    const { value, error } = JoiFoundItemSchema.validate(req.body);
-    if (error) {
-      throw new AppError("JOI", error);
-    }
+    let result: any;
+    if (req.body.isDeleted) {
+      result = await updateFoundItemService(req.params.id as string, req.body);
+    } else {
+      const { value, error } = JoiFoundItemSchema.validate(req.body);
+      if (error) {
+        throw new AppError("JOI", error);
+      }
 
-    const result = await updateFoundItemService(req.params.id as string, value);
+      result = await updateFoundItemService(req.params.id as string, value);
+    }
     return res.status(200).json({
       success: true,
       statusCode: 200,
