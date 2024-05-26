@@ -7,6 +7,7 @@ export const globalErrorHandler = (
   next: NextFunction
 ) => {
   const { errorType, errorSource } = err;
+  console.log(err)
 
   if (errorType === "JOI") {
     // if the error is related to JOI
@@ -19,6 +20,7 @@ export const globalErrorHandler = (
       error: err,
     });
   } else {
+
     res.status(400).json({
       success: false,
       message: "Something went wrong",

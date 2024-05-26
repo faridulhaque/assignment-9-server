@@ -5,6 +5,7 @@ import { verifyJwt } from "../utils/verifyJWT";
 import { JoiLostItemSchema } from "./lostItem.validation";
 import {
   ReportLostItemService,
+  getMyLostItemsService,
   getRecentLostItemService,
 } from "./lostItem.services";
 
@@ -36,6 +37,21 @@ export const getRecentLostItems = catchAsync(
       statusCode: 201,
       data: result,
       message: "Recent lost items retrieved successfully",
+    });
+  }
+);
+
+
+export const myLostItem = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user: any = await verifyJwt(req.headers.authorization as string);
+
+    const result = await getMyLostItemsService(user.id);
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      data: result,
+      message: "Lost items retrieved successfully",
     });
   }
 );

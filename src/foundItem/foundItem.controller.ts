@@ -6,6 +6,8 @@ import {
   ReportFoundItemService,
   createFoundItemCategoryService,
   getAllCategoryService,
+  getMyFoundItemsService,
+ 
 } from "./foundItem.services";
 import {
   JoiFoundItemSchema,
@@ -79,3 +81,18 @@ export const filterFoundItem = catchAsync(
     });
   }
 );
+
+export const myFoundItem = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user: any = await verifyJwt(req.headers.authorization as string);
+
+    const result = await getMyFoundItemsService(user.id);
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      data: result,
+      message: "Found items retrieved successfully",
+    });
+  }
+);
+

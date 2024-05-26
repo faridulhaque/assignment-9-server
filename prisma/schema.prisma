@@ -68,7 +68,6 @@ model LostItem {
   updatedAt   DateTime          @updatedAt
   user        User              @relation(fields: [userId], references: [id])
   category    FoundItemCategory @relation(fields: [categoryId], references: [id])
-  claim       Claim[]
 
   @@map("lostItems")
 }
@@ -82,8 +81,8 @@ model Claim {
   updatedAt   DateTime     @updatedAt
   FoundItem   FoundItem    @relation(fields: [foundItemId], references: [id])
   claim_user  claim_user[]
-  LostItem    LostItem?    @relation(fields: [lostItemId], references: [id])
-  lostItemId  String?
+  // LostItem    LostItem?    @relation(fields: [lostItemId], references: [id])
+  // lostItemId  String?
 
   @@map("claims")
 }

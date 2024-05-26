@@ -68,3 +68,15 @@ export const getRecentLostItemService = async () => {
 
   return items;
 };
+
+
+export const getMyLostItemsService = async (userId: string) => {
+  return await prisma.lostItem.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      category: true,
+    },
+  });
+};

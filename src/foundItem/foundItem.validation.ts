@@ -1,13 +1,12 @@
 import Joi from "joi";
 export const JoiFoundItemSchema = Joi.object({
   categoryId: Joi.string().required(),
-  status: Joi.string().valid("PENDING", "CANCELLED", "ACCEPTED").optional(),
   imgUrl: Joi.string().optional(),
   phone: Joi.string().optional(),
   email: Joi.string().optional(),
   location: Joi.string().required(),
   description: Joi.string().required(),
-  lostDate: Joi.date().required(),
+  foundDate: Joi.date().required(),
 });
 
 export const JoiItemFilterSchema = Joi.object({

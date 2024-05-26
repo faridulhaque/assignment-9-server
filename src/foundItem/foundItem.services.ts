@@ -38,7 +38,7 @@ export const ReportFoundItemService = async (body: any, userId: string) => {
     userId,
   };
 
-  const item = await prisma.lostItem.create({
+  const item = await prisma.foundItem.create({
     data: newData,
     select: {
       id: true,
@@ -154,4 +154,15 @@ export const FilterFoundItemService = async (queries: any) => {
   };
 
   return response;
+};
+
+export const getMyFoundItemsService = async (userId: string) => {
+  return await prisma.foundItem.findMany({
+    where: {
+      userId: userId,
+    },
+    include: {
+      category: true,
+    },
+  });
 };
