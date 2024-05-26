@@ -16,7 +16,7 @@ import {
   reportFoundItem,
   updateFoundItem,
 } from "./foundItem/foundItem.controller";
-import { createClaim, getClaim, updateClaim } from "./claim/claim.controller";
+import { createClaim, getClaim, getMyClaim, updateClaim } from "./claim/claim.controller";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
 import {
   getLostItemController,
@@ -55,13 +55,14 @@ app.get("/api/my-found-items", myFoundItem);
 app.get("/api/my-lost-items", myLostItem);
 app.put("/api/found-item/update/:id", updateFoundItem);
 app.put("/api/lost-item/update/:id", updateLostItem);
+app.get("/api/items/filter", filterFoundItem);
 
 app.get("/api/found-item/:id", getFoundItemController);
 app.get("/api/lost-item/:id", getLostItemController);
+app.post("/api/item/claim", createClaim);
+app.get("/api/my-claims", getMyClaim);
 
-app.get("/api/found-items", filterFoundItem);
 
-app.post("/api/claims", createClaim);
 app.get("/api/claims", getClaim);
 app.put("/api/claims/:claimId", updateClaim);
 

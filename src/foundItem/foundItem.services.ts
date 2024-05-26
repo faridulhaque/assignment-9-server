@@ -81,79 +81,41 @@ export const ReportFoundItemService = async (body: any, userId: string) => {
 };
 // filtering found items
 export const FilterFoundItemService = async (queries: any) => {
-  const { searchTerm, page, limit, sortBy, sortOrder, foundItemName } = queries;
+  const { categoryId, searchTerm } = queries;
 
-  const pageNumber = page ? page : 1;
-  const limitTotal = limit ? limit : 10;
+  console.log(categoryId)
+  console.log(searchTerm)
 
   const result = await prisma.foundItem.findMany({
-    orderBy: [
-      {
-        [sortBy === "foundDate" ? "createdAt" : sortBy]: sortOrder,
-      },
-    ],
-    where: {
-      OR: searchTerm
-        ? [
-            {
-              location: {
-                contains: searchTerm,
-                mode: "insensitive",
-              },
-            },
-            {
-              description: {
-                contains: searchTerm,
-                mode: "insensitive",
-              },
-            },
-          ]
-        : [],
+    orderBy: {
+      createdAt: "desc",
     },
+    where: {
+      AND: [
+        categoryId ? { categoryId } : {},
 
-    take: parseInt(limitTotal),
-    skip: (parseInt(pageNumber) - 1) * parseInt(limitTotal),
-
-    select: {
-      id: true,
-      location: true,
-      description: true,
-      createdAt: true,
-      updatedAt: true,
+        searchTerm
+          ? {
+              OR: [
+                { location: { contains: searchTerm, mode: "insensitive" } },
+                { description: { contains: searchTerm, mode: "insensitive" } },
+              ],
+            }
+          : {},
+      ],
+    },
+    include: {
       category: true,
-
       user: {
         select: {
           id: true,
           email: true,
-          createdAt: true,
         },
       },
     },
-
-    // include: {
-    //   category: true,
-
-    //   user: {
-    //     select: {
-    //       id: true,
-    //       name: true,
-    //       email: true,
-    //       createdAt: true,
-    //     },
-    //   },
-    // },
   });
 
-  const response = {
-    data: result,
-    meta: {
-      page: pageNumber,
-      limit: limitTotal,
-    },
-  };
-
-  return response;
+  return result;
 };
 
 export const getMyFoundItemsService = async (userId: string) => {
@@ -168,8 +130,7 @@ export const getMyFoundItemsService = async (userId: string) => {
   });
 };
 
-
-export const updateFoundItemService = async (id:string, data: any) => {
+export const updateFoundItemService = async (id: string, data: any) => {
   const result = await prisma.foundItem.update({
     where: {
       id,
@@ -185,9 +146,9 @@ export const getFoundItemService = async (id: string) => {
     where: {
       id: id,
     },
-    include:{
+    include: {
       category: true,
-    }
+    },
   });
 
   return item;

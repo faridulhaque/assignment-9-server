@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
-import { getClaimsService, makeClaimService, updateClaimService } from "./claim.service";
+import {
+  getClaimsService,
+  getMyClaimsService,
+  makeClaimService,
+  updateClaimService,
+} from "./claim.service";
 import { JoiClaimSchema } from "./claim.validation";
 import AppError from "../utils/appError";
 import { verifyJwt } from "../utils/verifyJWT";
@@ -41,11 +46,27 @@ export const updateClaim = catchAsync(
     });
   }
 );
+
 export const getClaim = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await verifyJwt(req.headers.authorization as string);
 
     const claims = await getClaimsService();
+
+    res.status(200).json({
+      success: true,
+      statusCode: 201,
+      message: "Claims retrieved successfully",
+      data: claims,
+    });
+  }
+);
+
+export const getMyClaim = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user: any = await verifyJwt(req.headers.authorization as string);
+
+    const claims = await getMyClaimsService(user?.id);
 
     res.status(200).json({
       success: true,

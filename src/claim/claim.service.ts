@@ -4,30 +4,29 @@ import AppError from "../utils/appError";
 
 const prisma = new PrismaClient();
 
-export const makeClaimService = async (body: TClaim, userId: string) => {
-  const newBody = {
-    ...body,
-    userId,
-    status: "PENDING",
-  };
+export const makeClaimService = async (body: any, userId: string) => {
+  const claimed = await prisma.claim.findFirst({
+    where: {
+      userId: userId,
+      foundItemId: body?.foundItemId,
+    },
+  });
 
-  const result: any = await prisma.$transaction(async (transactionClient) => {
-    try {
-      const claim = await transactionClient.claim.create({
-        data: newBody,
-      });
-
-      const userClaimConnection = await transactionClient.claim_user.create({
-        data: {
-          userId: userId,
-          claimId: claim.id,
-        },
-      });
-
-      return claim;
-    } catch (error) {
-      throw new AppError("PRISMA", error);
-    }
+  if (claimed) {
+    throw new AppError("prisma", {
+      message: "You have already made a claim",
+    });
+  }
+  const result = await prisma.claim.create({
+    data: {
+      foundItemId: body?.foundItemId,
+      userId: userId,
+    },
+    select: {
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   return result;
@@ -47,6 +46,21 @@ export const getClaimsService = async () => {
               updatedAt: true,
             },
           },
+          category: true,
+        },
+      },
+    },
+  });
+};
+
+export const getMyClaimsService = async (id: string) => {
+  return await prisma.claim.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      FoundItem: {
+        include: {
           category: true,
         },
       },

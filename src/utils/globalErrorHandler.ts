@@ -8,6 +8,8 @@ export const globalErrorHandler = (
 ) => {
   const { errorType, errorSource } = err;
 
+  console.log(err)
+
   if (errorType === "JOI") {
     // if the error is related to JOI
     const { errorMessage, error } = handleJoiError(errorSource);
