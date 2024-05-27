@@ -77,6 +77,7 @@ export const loginUserService = async (email: string, password: string) => {
     email: foundUser?.email,
     id: foundUser?.id,
     token: token,
+    isAdmin: foundUser?.isAdmin,
   };
   return result;
 };

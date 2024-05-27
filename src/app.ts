@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import {
+  banUserController,
   changePassword,
   getAllUsers,
   getProfile,
@@ -63,9 +64,10 @@ app.get("/api/lost-item/:id", getLostItemController);
 app.post("/api/item/claim", createClaim);
 app.get("/api/my-claims", getMyClaim);
 app.get("/api/users/all", getAllUsers);
-
-
 app.get("/api/claims", getClaim);
+app.put("/api/user/ban", banUserController);
+
+
 app.put("/api/claims/:claimId", updateClaim);
 
 app.get("/test", (req, res) => {

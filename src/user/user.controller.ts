@@ -79,6 +79,23 @@ export const updateProfile = catchAsync(
   }
 );
 
+export const banUserController = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await verifyJwt(req.headers.authorization as string);
+    noAdminError(user);
+
+    const result = await updateProfileService(req?.body?.id as string, {
+      isBanned: req?.body?.isBanned,
+    });
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: result,
+      message: "User banned successfully",
+    });
+  }
+);
+
 // get my profile
 export const getProfile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -96,12 +113,7 @@ export const getProfile = catchAsync(
 export const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await verifyJwt(req.headers.authorization as string);
-    if (user?.isAdmin === false) {
-      throw new AppError("auth", {
-        message:
-          "You do not have the necessary permissions to access this resource.",
-      });
-    }
+    noAdminError(user);
 
     const result = await getUsersService();
 
@@ -131,3 +143,12 @@ export const changePassword = catchAsync(
     });
   }
 );
+
+const noAdminError = (user: any) => {
+  if (user?.isAdmin === true) {
+    throw new AppError("auth", {
+      message:
+        "You do not have the necessary permissions to access this resource.",
+    });
+  }
+};
