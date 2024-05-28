@@ -49,6 +49,7 @@ export const getClaimsService = async () => {
           category: true,
         },
       },
+      
     },
   });
 };

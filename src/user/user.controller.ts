@@ -144,8 +144,8 @@ export const changePassword = catchAsync(
   }
 );
 
-const noAdminError = (user: any) => {
-  if (user?.isAdmin === true) {
+export const noAdminError = (user: any) => {
+  if (user?.isAdmin === false) {
     throw new AppError("auth", {
       message:
         "You do not have the necessary permissions to access this resource.",

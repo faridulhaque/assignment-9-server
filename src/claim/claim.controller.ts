@@ -9,6 +9,7 @@ import {
 import { JoiClaimSchema } from "./claim.validation";
 import AppError from "../utils/appError";
 import { verifyJwt } from "../utils/verifyJWT";
+import { noAdminError } from "../user/user.controller";
 
 export const createClaim = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -49,7 +50,8 @@ export const updateClaim = catchAsync(
 
 export const getClaim = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await verifyJwt(req.headers.authorization as string);
+    const user = await verifyJwt(req.headers.authorization as string);
+    noAdminError(user);
 
     const claims = await getClaimsService();
 
