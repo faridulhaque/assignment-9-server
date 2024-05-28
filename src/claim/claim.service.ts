@@ -49,8 +49,16 @@ export const getClaimsService = async () => {
           category: true,
         },
       },
-      
     },
+  });
+};
+
+export const getClaimersService = async (id: string) => {
+  return await prisma.claim.findMany({
+    where: {
+      foundItemId: id,
+    },
+    
   });
 };
 

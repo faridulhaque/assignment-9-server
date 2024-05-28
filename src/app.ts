@@ -18,7 +18,7 @@ import {
   reportFoundItem,
   updateFoundItem,
 } from "./foundItem/foundItem.controller";
-import { createClaim, getClaim, getMyClaim, updateClaim } from "./claim/claim.controller";
+import { createClaim, getClaim, getClaimers, getMyClaim, updateClaim } from "./claim/claim.controller";
 import { globalErrorHandler } from "./utils/globalErrorHandler";
 import {
   getLostItemController,
@@ -66,8 +66,10 @@ app.get("/api/my-claims", getMyClaim);
 app.get("/api/users/all", getAllUsers);
 app.get("/api/claims", getClaim);
 app.put("/api/user/ban", banUserController);
+app.put("/api/user/ban", banUserController);
 
-
+// unused routes 
+app.get("/api/claimers/:id", getClaimers);
 app.put("/api/claims/:claimId", updateClaim);
 
 app.get("/test", (req, res) => {

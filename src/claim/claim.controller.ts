@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 import {
+  getClaimersService,
   getClaimsService,
   getMyClaimsService,
   makeClaimService,
@@ -75,6 +76,22 @@ export const getMyClaim = catchAsync(
       statusCode: 201,
       message: "Claims retrieved successfully",
       data: claims,
+    });
+  }
+);
+
+export const getClaimers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await verifyJwt(req.headers.authorization as string);
+    noAdminError(user);
+
+    const claimers = await getClaimersService(req.params.id as string);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 201,
+      message: "Claimers retrieved successfully",
+      data: claimers,
     });
   }
 );

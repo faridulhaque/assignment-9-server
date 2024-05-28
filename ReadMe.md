@@ -22,3 +22,4 @@ The main features include:
 * Users can upload details about an item they found.
 * Individuals who have lost their belongings can search for them here.
 * If they suspect that something on the website belongs to them, they can claim it.
+* There is a dashboard for admins to track claims and manage users.
